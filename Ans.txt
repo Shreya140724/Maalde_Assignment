@@ -1,0 +1,47 @@
+1. How did you approach this problem?
+
+I treated this as a regression problem using both image features and sales data.
+The sales data was transactional, so I aggregated it per product (total qty, average rate). Since there was no mapping between images and product codes, I used a sequential mapping to proceed.
+For modeling,:
+extracted image features using ResNet50
+combined them with price (rate)
+trained an XGBoost model with log-transformed targets
+
+Finally, I built a Streamlit UI for predictions.
+
+
+2. How does your prediction system work?
+Image → ResNet50 → 2048-dim features
+Add price (rate)
+Pass to XGBoost model
+Predict demand (log scale → converted back)
+
+Output:
+predicted units
+demand category (Low / Medium / High)
+
+
+3. What patterns did you find?
+Most products have low to medium demand
+Demand is skewed (few high sellers)
+Price has some effect, but not strong
+Due to missing mapping, design impact couldn’t be learned properly
+
+
+
+4. Where can your system fail?
+No real image ↔ product mapping (main limitation)
+Missing features (category, trends, seasonality)
+Small dataset (~180 samples)
+Uses a default price during prediction
+So predictions are approximate, not exact.
+
+
+5. How would you improve it?
+Create proper image-product mapping
+Use CLIP instead of ResNet
+Add features (category, color, trends)
+Use better evaluation (cross-validation)
+Improve UI (ranges, confidence)
+
+
